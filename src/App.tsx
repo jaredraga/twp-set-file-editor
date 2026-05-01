@@ -39,9 +39,9 @@ export default function App() {
       copy.sort((a, b) => a.filename.localeCompare(b.filename));
     } else {
       copy.sort((a, b) => {
-        const sa = getTradeSession(a);
-        const sb = getTradeSession(b);
-        if (sa !== sb) return sa - sb;
+        const sa = getSessionLabel(a);
+        const sb = getSessionLabel(b);
+        if (sa !== sb) return sa.localeCompare(sb);
         return a.filename.localeCompare(b.filename);
       });
     }
@@ -102,7 +102,7 @@ export default function App() {
     setSelectedIds([]);
   };
 
-// ── Session grouping for session-sort display ──────────────────────────────
+  // ── Session grouping for session-sort display ──────────────────────────────
   const sessionGroups = useMemo(() => {
     if (sortMode !== 'session') return null;
     const groups: Record<string, SetFile[]> = {};
