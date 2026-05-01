@@ -1,0 +1,122 @@
+Do you accept TOS?:
+YES
+NO
+
+Lots mode:
+Static
+Dynamic (% of balance)
+1 Lot per X balance
+
+SL mode:
+Points
+ATR
+Range size
+Previous candle + Points
+Last swing + Points
+Last swing + ATR
+Range opposite + Points
+Range opposite + ATR
+
+TP mode:
+Points
+ATR
+SL Ratio (RR)
+
+ATR Timeframe:
+current
+1 Minute
+2 Minutes
+3 Minutes
+4 Minutes
+5 Minutes
+6 Minutes
+10 Minutes
+12 Minutes
+15 Minutes
+20 Minutes
+30 Minutes
+1 Hour
+2 Hours
+3 Hours
+4 Hours
+6 Hours
+8 Hours
+12 Hours
+1 Day
+1 Week
+1 Month
+
+Trading session:
+Asian
+European
+London
+American
+NYSE
+Custom Range
+
+Range to be considered for DST:
+No daylight saving time
+North America
+Europe
+Oceania
+
+EA Timeframe:
+current
+1 Minute
+2 Minutes
+3 Minutes
+4 Minutes
+5 Minutes
+6 Minutes
+10 Minutes
+12 Minutes
+15 Minutes
+20 Minutes
+30 Minutes
+1 Hour
+2 Hours
+3 Hours
+4 Hours
+6 Hours
+8 Hours
+12 Hours
+1 Day
+1 Week
+1 Month
+
+Entry mode:
+Hybrid Execution Trading
+Breakout
+Instant Breakout
+Retrace
+Instant Retrace
+Retest range same direction
+Retest range opposite direction
+Retest range level X
+FVG and Supply & Demand
+
+Set news source:
+MQL5.COM
+ForexFactory.com
+
+How to mark upcoming news on the chart:
+Do not mark
+Use a vertical line
+Create a non-trading zone
+
+Holiday Filter:
+Do not filter
+Filter all
+Filter medium impact or higher
+Filter high impact or higher
+Filter highest impact only
+
+Trailing stop mode:
+Disabled
+% TP size
+HiLo
+
+Enable dashboard:
+Full version
+Text-only version
+Disable

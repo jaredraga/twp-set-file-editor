@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(29, 37, 113, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(111, 157, 231, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(111, 157, 231, 0.55);
+}
+
+/* Select elements */
+select option {
+  background-color: #1D2571;
+  color: #EFEFEF;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Don't transition layout properties */
+* {
+  transition-property: background-color, border-color, color, opacity, box-shadow;
+}
