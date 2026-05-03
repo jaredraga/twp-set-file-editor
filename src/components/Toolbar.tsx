@@ -4,10 +4,14 @@ interface Props {
   sortMode: 'filename' | 'session';
   onSortChange: (mode: 'filename' | 'session') => void;
   onSelectAll: () => void;
+  onSelectSession: (session: string) => void;
   onDeselectAll: () => void;
   onEditSelected: () => void;
   onDownloadSelected: () => void;
   onRemoveSelected: () => void;
+  onDuplicateSelected: () => void;
+  onCreateNew: () => void;
+  sessionGroups?: Record<string, { id: string }[]> | null;
 }
 
 export default function Toolbar({
@@ -16,13 +20,19 @@ export default function Toolbar({
   sortMode,
   onSortChange,
   onSelectAll,
+  onSelectSession,
   onDeselectAll,
   onEditSelected,
   onDownloadSelected,
   onRemoveSelected,
+  onDuplicateSelected,
+  onCreateNew,
+  sessionGroups,
 }: Props) {
   const hasSelection = selectedIds.length > 0;
   const allSelected = selectedIds.length === totalFiles && totalFiles > 0;
+
+  const sessions = sessionGroups ? Object.keys(sessionGroups) : [];
 
   return (
     <div className="flex flex-wrap items-center gap-3 px-4 py-3 rounded-xl border border-[#1D2571]/60 bg-[#1D2571]/20">
@@ -59,8 +69,8 @@ export default function Toolbar({
 
       <div className="h-4 w-px bg-[#1D2571] mx-1" />
 
-      {/* Select all / deselect */}
-      <div className="flex items-center gap-1.5">
+      {/* Select controls */}
+      <div className="flex items-center gap-1.5 flex-wrap">
         <button
           onClick={allSelected ? onDeselectAll : onSelectAll}
           disabled={totalFiles === 0}
@@ -82,13 +92,29 @@ export default function Toolbar({
             </>
           )}
         </button>
+
+        {/* Per-session select buttons — only shown when sorted by session */}
+        {sortMode === 'session' && sessions.length > 0 && (
+          <>
+            <span className="text-[#7CBCC3]/40 text-xs">|</span>
+            {sessions.map(session => (
+              <button
+                key={session}
+                onClick={() => onSelectSession(session)}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-[#EFEFEF]/60 hover:text-[#EFEFEF] hover:bg-white/5 border border-transparent transition-all"
+              >
+                {session}
+              </button>
+            ))}
+          </>
+        )}
       </div>
 
       {/* Selection actions */}
       {hasSelection && (
         <>
           <div className="h-4 w-px bg-[#1D2571] mx-1" />
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-[#7CBCC3] text-xs font-semibold bg-[#7CBCC3]/10 border border-[#7CBCC3]/30 rounded-full px-2 py-0.5">
               {selectedIds.length} selected
             </span>
@@ -100,6 +126,16 @@ export default function Toolbar({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
               </svg>
               Edit
+            </button>
+            <button
+              onClick={onDuplicateSelected}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#7CBCC3]/15 hover:bg-[#7CBCC3]/25 border border-[#7CBCC3]/30 text-[#7CBCC3] transition-all"
+              title="Duplicate selected files (prompts for filenames)"
+            >
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+              </svg>
+              Duplicate
             </button>
             <button
               onClick={onDownloadSelected}
@@ -123,8 +159,21 @@ export default function Toolbar({
         </>
       )}
 
-      <div className="ml-auto text-[#7CBCC3]/50 text-xs">
-        {totalFiles} file{totalFiles !== 1 ? 's' : ''}
+      {/* Right side */}
+      <div className="ml-auto flex items-center gap-3">
+        <button
+          onClick={onCreateNew}
+          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#6F9DE7]/10 hover:bg-[#6F9DE7]/25 border border-[#6F9DE7]/25 text-[#6F9DE7]/80 hover:text-[#6F9DE7] transition-all"
+          title="Load default .set files"
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          New
+        </button>
+        <span className="text-[#7CBCC3]/50 text-xs">
+          {totalFiles} file{totalFiles !== 1 ? 's' : ''}
+        </span>
       </div>
     </div>
   );

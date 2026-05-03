@@ -1,37 +1,113 @@
-export const TIMEFRAME_MAP: Record<number, string> = {
-  0: 'current', 1: '1 Minute', 2: '2 Minutes', 3: '3 Minutes', 4: '4 Minutes',
-  5: '5 Minutes', 6: '6 Minutes', 7: '10 Minutes', 8: '12 Minutes', 9: '15 Minutes',
-  10: '20 Minutes', 11: '30 Minutes', 12: '1 Hour', 13: '2 Hours', 14: '3 Hours',
-  15: '4 Hours', 16: '6 Hours', 17: '8 Hours', 18: '12 Hours', 19: '1 Day',
-  20: '1 Week', 21: '1 Month'
+// ─── Import the JSON mapping directly (Vite resolves this at build time) ──────
+import inputDefs from '../TWP_v1.11_inputs.json';
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface InputDef {
+  var: string;
+  label: string;
+  type: 'string' | 'integer' | 'float' | 'boolean' | 'enum' | 'color';
+  options?: string[];
+}
+
+// ─── Derive flat map from JSON (all sections combined) ────────────────────────
+
+const ALL_DEFS: InputDef[] = Object.values(inputDefs).flat() as InputDef[];
+
+export const INPUT_DEF_MAP: Record<string, InputDef> = Object.fromEntries(
+  ALL_DEFS.map(d => [d.var, d])
+);
+
+export function getParamLabel(key: string): string {
+  return INPUT_DEF_MAP[key]?.label ?? key;
+}
+
+export function getInputDef(key: string): InputDef | undefined {
+  return INPUT_DEF_MAP[key];
+}
+
+// ─── PARAM_MAPPINGS — derived from JSON enums + extras not in JSON ────────────
+
+function optionsToMap(def?: InputDef): Record<number, string> | undefined {
+  if (!def?.options) return undefined;
+  return Object.fromEntries(def.options.map((label, idx) => [idx, label]));
+}
+
+// ─── MT5 BGR Color Helpers ────────────────────────────────────────────────────
+
+/** Convert MT5 packed BGR integer (e.g. "2036737") to hex string (e.g. "#01141f") */
+export function mt5ColorToHex(packed: string): string {
+  const n = parseInt(packed, 10);
+  if (isNaN(n) || n < 0) return '#000000';
+  const r = n & 0xFF;
+  const g = (n >> 8) & 0xFF;
+  const b = (n >> 16) & 0xFF;
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+/** Convert hex string (e.g. "#01141f") to MT5 packed BGR integer string (e.g. "2036737") */
+export function hexToMt5Color(hex: string): string {
+  const clean = hex.replace('#', '');
+  const r = parseInt(clean.substring(0, 2), 16);
+  const g = parseInt(clean.substring(2, 4), 16);
+  const b = parseInt(clean.substring(4, 6), 16);
+  return String((b << 16) | (g << 8) | r);
+}
+
+/** Convert MT5 packed BGR integer to "R,G,B" display string */
+export function mt5ColorToRgbString(packed: string): string {
+  const n = parseInt(packed, 10);
+  if (isNaN(n) || n < 0) return '0,0,0';
+  const r = n & 0xFF;
+  const g = (n >> 8) & 0xFF;
+  const b = (n >> 16) & 0xFF;
+  return `${r},${g},${b}`;
+}
+
+// The 21 exact valid states for MQL5 ENUM_TIMEFRAMES
+const TIMEFRAME_ENUM_VALUES: Record<number, string> = {
+  0: 'current',
+  1: '1 Minute',
+  2: '2 Minutes',
+  3: '3 Minutes',
+  4: '4 Minutes',
+  5: '5 Minutes',
+  6: '6 Minutes',
+  10: '10 Minutes',
+  12: '12 Minutes',
+  15: '15 Minutes',
+  20: '20 Minutes',
+  30: '30 Minutes',
+  16385: '1 Hour',
+  16386: '2 Hours',
+  16387: '3 Hours',
+  16388: '4 Hours',
+  16390: '6 Hours',
+  16392: '8 Hours',
+  16396: '12 Hours',
+  16408: '1 Day',
+  32769: '1 Week',
+  49153: '1 Month'
 };
 
 export const PARAM_MAPPINGS: Record<string, Record<number, string>> = {
+  // Derived directly from the JSON enum fields
+  ...Object.fromEntries(
+    ALL_DEFS
+      .filter(d => d.type === 'enum' && d.options)
+      .map(d => [d.var, optionsToMap(d)!])
+  ),
+  // MT5 quirk: The visual list is ["YES","NO"], but it actually saves to the .set file as 0=NO, 1=YES.
   InpDoYouAcceptTOS: { 0: 'NO', 1: 'YES' },
-  iLotsMode: { 0: 'Static', 1: 'Dynamic (% of balance)', 2: '1 Lot per X balance' },
-  iSLMode: {
-    0: 'Points', 1: 'ATR', 2: 'Range size', 3: 'Previous candle + Points',
-    4: 'Last swing + Points', 5: 'Last swing + ATR', 6: 'Range opposite + Points', 7: 'Range opposite + ATR'
-  },
-  iTPMode: { 0: 'Points', 1: 'ATR', 2: 'SL Ratio (RR)' },
-  iATRTimeframe: TIMEFRAME_MAP,
-  iEntryTF: TIMEFRAME_MAP,
-  iTradeSession: { 0: 'Asian', 1: 'European', 2: 'London', 3: 'American', 4: 'NYSE', 5: 'Custom Range' },
-  DstRegion: { 0: 'No daylight saving time', 1: 'North America', 2: 'Europe', 3: 'Oceania' },
-  iEntryMode: {
-    0: 'Hybrid Execution Trading', 1: 'Breakout', 2: 'Instant Breakout', 3: 'Retrace',
-    4: 'Instant Retrace', 5: 'Retest range same direction', 6: 'Retest range opposite direction',
-    7: 'Retest range level X', 8: 'FVG and Supply & Demand'
-  },
-  iNewsSource: { 0: 'MQL5.COM', 1: 'ForexFactory.com' },
-  iMarkNewsOnChart: { 0: 'Do not mark', 1: 'Use a vertical line', 2: 'Create a non-trading zone' },
-  iFilterHoliday: { 
-    0: 'Do not filter', 1: 'Filter all', 2: 'Filter medium impact or higher', 
-    3: 'Filter high impact or higher', 4: 'Filter highest impact only' 
-  },
-  iTSMode: { 0: 'Disabled', 1: '% TP size', 2: 'HiLo' },
-  iEnableDashboard: { 0: 'Full version', 1: 'Text-only version', 2: 'Disable' }
+
+  // Override timeframe parameters with correct MQL5 enum values
+  // Another quirk: MT5's timeframe enum values are not sequential indices - 
+  // they jump to specific constants starting at "1 Hour" (16385)
+  iATRTimeframe: TIMEFRAME_ENUM_VALUES,
+  iEntryTF: TIMEFRAME_ENUM_VALUES,
 };
+
+// ─── Core types ───────────────────────────────────────────────────────────────
 
 export interface SetLine {
   type: 'comment' | 'separator' | 'param' | 'blank';
@@ -46,9 +122,23 @@ export interface SetFile {
   lines: SetLine[];
 }
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * Parse a raw value that may contain || separators (e.g. "100592001||34232||1||342320||N").
+ * Only the FIRST segment is kept; the rest are optimizer metadata.
+ */
+export function extractFirstValue(raw: string): string {
+  if (raw.includes('||')) {
+    return raw.split('||')[0];
+  }
+  return raw;
+}
+
 export function getParam(file: SetFile, key: string): string | undefined {
   const line = file.lines.find(l => l.type === 'param' && l.key === key);
-  return line?.value;
+  if (line?.value === undefined) return undefined;
+  return extractFirstValue(line.value);
 }
 
 export function setParam(file: SetFile, key: string, value: string): SetFile {
@@ -58,13 +148,16 @@ export function setParam(file: SetFile, key: string, value: string): SetFile {
     }
     return l;
   });
+  if (!lines.some(l => l.type === 'param' && l.key === key)) {
+    lines.push({ type: 'param', raw: `${key}=${value}`, key, value });
+  }
   return { ...file, lines };
 }
 
 export function getSessionLabel(file: SetFile): string {
   const v = getParam(file, 'iTradeSession');
   if (v === undefined) return 'Unknown';
-  return PARAM_MAPPINGS.iTradeSession[parseInt(v, 10)] || `Session ${v}`;
+  return PARAM_MAPPINGS.iTradeSession?.[parseInt(v, 10)] ?? `Session ${v}`;
 }
 
 export function serializeSetFile(file: SetFile): string {
@@ -72,4 +165,23 @@ export function serializeSetFile(file: SetFile): string {
     if (l.type === 'param') return `${l.key}=${l.value}`;
     return l.raw;
   }).join('\n');
+}
+
+export function sanitizeValue(key: string, raw: string): string {
+  const def = getInputDef(key);
+  if (!def) return raw;
+  switch (def.type) {
+    case 'integer': {
+      const n = parseInt(raw, 10);
+      return isNaN(n) ? raw : String(n);
+    }
+    case 'float': {
+      const f = parseFloat(raw);
+      return isNaN(f) ? raw : String(f);
+    }
+    case 'boolean':
+      return raw === 'true' || raw === '1' ? 'true' : 'false';
+    default:
+      return raw;
+  }
 }

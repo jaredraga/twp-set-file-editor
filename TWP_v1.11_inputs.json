@@ -1,0 +1,115 @@
+{
+  "Access": [
+    { "var": "User", "label": "Username", "type": "string" },
+    { "var": "InpDoYouAcceptTOS", "label": "Do you accept TOS?", "type": "enum", "options": ["YES", "NO"] },
+    { "var": "InpTOSAddress", "label": "TOS (Terms of service)", "type": "string" }
+  ],
+  "Trades": [
+    { "var": "iMagicNumber", "label": "Magic number", "type": "integer" },
+    { "var": "iLotsMode", "label": "Lots mode", "type": "enum", "options": ["Static", "Dynamic (% of balance)", "1 Lot per X balance"] },
+    { "var": "iLots", "label": "Lots/Risk", "type": "float" },
+    { "var": "iSLMode", "label": "SL mode", "type": "enum", "options": ["Points", "ATR", "Range size", "Previous candle + Points","Previous candle + ATR", "Last swing + Points", "Last swing + ATR", "Range opposite + Points", "Range opposite + ATR"] },
+    { "var": "iSL", "label": "SL", "type": "float" },
+    { "var": "iTPMode", "label": "TP mode", "type": "enum", "options": ["Points", "ATR", "SL Ratio (RR)"] },
+    { "var": "iTP", "label": "TP", "type": "float" },
+    { "var": "iATR_", "label": "ATR period", "type": "integer" },
+    { "var": "iATRTimeframe", "label": "ATR Timeframe", "type": "enum", "options": ["current", "1 Minute", "2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "6 Minutes", "10 Minutes", "12 Minutes", "15 Minutes", "20 Minutes", "30 Minutes", "1 Hour", "2 Hours", "3 Hours", "4 Hours", "6 Hours", "8 Hours", "12 Hours", "1 Day", "1 Week", "1 Month"] }
+  ],
+  "Strategy": [
+    { "var": "iTradeSession", "label": "Trading session", "type": "enum", "options": ["Asian", "European", "London", "American", "NYSE", "Custom Range"] },
+    { "var": "iCustomRange", "label": "Custom range start", "type": "enum", "options": ["00:00", "00:15", "00:30", "00:45", "01:00", "01:15", "01:30", "01:45", "02:00", "02:15", "02:30", "02:45", "03:00", "03:15", "03:30", "03:45", "04:00", "04:15", "04:30", "04:45", "05:00", "05:15", "05:30", "05:45", "06:00", "06:15", "06:30", "06:45", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00", "23:15", "23:30", "23:45"] },
+    { "var": "DstRegion", "label": "Region to be considered for DST", "type": "enum", "options": ["No daylight saving time", "North America", "Europe", "Oceania"] },
+    { "var": "iRangeMinutes", "label": "Minutes for range calculation", "type": "integer" },
+    { "var": "iTradeSessionMinutes", "label": "Stop looking for entries X minutes after range completion", "type": "integer" },
+    { "var": "iMaxHolding", "label": "Max. holding trade in minutes (0 = disabled)", "type": "integer" },
+    { "var": "iGMTShift", "label": "Broker GMT offset", "type": "integer" },
+    { "var": "iEntryTF", "label": "EA timeframe", "type": "enum", "options": ["current", "1 Minute", "2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "6 Minutes", "10 Minutes", "12 Minutes", "15 Minutes", "20 Minutes", "30 Minutes", "1 Hour", "2 Hours", "3 Hours", "4 Hours", "6 Hours", "8 Hours", "12 Hours", "1 Day", "1 Week", "1 Month"] },
+    { "var": "iEntryMode", "label": "Entry mode", "type": "enum", "options": ["Hybrid Execution Trading", "Breakout", "Instant Breakout", "Retrace", "Instant Retrace", "Retest range same direction", "Retest range opposite direction", "Retest range level X", "FVG and Supply & Demand"] },
+    { "var": "iEntryRetestLevel", "label": "Retest range level", "type": "float" },
+    { "var": "iEntryRetestMaxBody", "label": "Retest max. body candle (ATR)", "type": "float" },
+    { "var": "iEntryBOMinBody", "label": "Breakout min. body candle (ATR)", "type": "float" },
+    { "var": "iSDMinCandles", "label": "Supply&Demand min. candles", "type": "integer" },
+    { "var": "iFVGAggressiveSetup", "label": "FVG - Aggressive push setup (% Range size)", "type": "integer" }
+  ],
+  "Filters": [
+    { "var": "iMaxTradesAtOnce", "label": "Max trades at a time", "type": "integer" },
+    { "var": "iMaxTradesDaily", "label": "Max trades per session", "type": "integer" },
+    { "var": "iMaxSpread", "label": "Max spread (0=no limit)", "type": "integer" },
+    { "var": "iFilterEMA", "label": "Filter EMA", "type": "boolean" },
+    { "var": "iFilterEMAPeriod", "label": "Filter EMA period", "type": "integer" },
+    { "var": "iFilterSR", "label": "Filter S/R", "type": "boolean" },
+    { "var": "iFilterSRPeriod", "label": "Filter S/R period", "type": "integer" },
+    { "var": "iFilterSRMinDist", "label": "Filter S/R min. distance (ATR)", "type": "float" },
+    { "var": "iFilterFVG_SD", "label": "Filter FVG and S&D", "type": "boolean" },
+    { "var": "iFilterEngulf", "label": "Trade engulf only", "type": "boolean" }
+  ],
+  "News": [
+    { "var": "iNewsSource", "label": "Set news source", "type": "enum", "options": ["MQL5.COM", "ForexFactory.com"] },
+    { "var": "iMarkNewsOnChart", "label": "How to mark upcoming news on the chart", "type": "enum", "options": ["Do not mark", "Use a vertical line", "Create a non-trading zone"] },
+    { "var": "iNewsMarkiBackgroud_color", "label": "Non-trading zone color", "type": "color" },
+    { "var": "iNewsMarkFill", "label": "Fill non-trading zone", "type": "boolean" },
+    { "var": "iNewsLow", "label": "Filter Low News", "type": "boolean" },
+    { "var": "iNewsLowBefore", "label": "Disable before X minutes", "type": "integer" },
+    { "var": "iNewsLowAfter", "label": "Disable after X minutes", "type": "integer" },
+    { "var": "iNewsModerate", "label": "Filter Moderate News", "type": "boolean" },
+    { "var": "iNewsModerateBefore", "label": "Disable before X minutes", "type": "integer" },
+    { "var": "iNewsModerateAfter", "label": "Disable after X minutes", "type": "integer" },
+    { "var": "iNewsHigh", "label": "Filter High News", "type": "boolean" },
+    { "var": "iNewsHighBefore", "label": "Disable before X minutes", "type": "integer" },
+    { "var": "iNewsHighAfter", "label": "Disable after X minutes", "type": "integer" },
+    { "var": "iNewsSymb", "label": "Currency to be checked (Empty = Current symbol)", "type": "string" },
+    { "var": "iNewsKeywords", "label": "Keywords to check (, separator empty=ALL)", "type": "string" },
+    { "var": "iFilterHoliday", "label": "Holiday Filter", "type": "enum", "options": ["Do not filter", "Filter all", "Filter medium impact or higher", "Filter high impact or higher", "Filter highest impact only"] }
+  ],
+  "Various": [
+    { "var": "iLotsMultiplier", "label": "Lots multiplier after loss", "type": "float" },
+    { "var": "iPartialCloseValue", "label": "Partial close (% TP to trigger, 0=disabled)", "type": "float" },
+    { "var": "iPartialCloseAmount", "label": "Partial close (% lots to close)", "type": "float" },
+    { "var": "iPartialCloseBE", "label": "Partial close set SL to BE", "type": "boolean" },
+    { "var": "iTSMode", "label": "Trailing stop mode", "type": "enum", "options": ["Disabled", "% TP size", "HiLo"] },
+    { "var": "iTT", "label": "Trailing trigger (% TP)", "type": "integer" },
+    { "var": "iTS", "label": "Trailing size (% TP)", "type": "integer" },
+    { "var": "iHLPeriod", "label": "HiLo period", "type": "integer" }
+  ],
+  "Grid": [
+    { "var": "iUseGrid", "label": "Enable grid", "type": "boolean" },
+    { "var": "iOpenFilter", "label": "Trade only if there is no other open trade", "type": "boolean" },
+    { "var": "iGridSetup", "label": "Grid levels distance multiplier", "type": "string" },
+    { "var": "iVolumeSetup", "label": "Grid volume multiplier", "type": "string" }
+  ],
+  "Graphics": [
+    { "var": "iBackgroud_colorRange", "label": "Color of monitoring range", "type": "color" },
+    { "var": "iFillMonitoringRange", "label": "Fill monitoring range", "type": "boolean" },
+    { "var": "iBackgroud_colorTrade", "label": "Color of trading range", "type": "color" },
+    { "var": "iFilltradingRange", "label": "Fill trading range", "type": "boolean" },
+    { "var": "iDrawSD", "label": "Draw S&D zone", "type": "enum", "options": ["Do not draw", "Rectangle", "Filled rectangle"] },
+    { "var": "iSupplyclr", "label": "Supply color", "type": "color" },
+    { "var": "iDemandclr", "label": "Demand color", "type": "color" },
+    { "var": "iFVGclr", "label": "FVG color", "type": "color" },
+    { "var": "iIndicatorsHide", "label": "Hide indicators", "type": "boolean" }
+  ],
+  "Advanced Risk Management": [
+    { "var": "iUseAdvancedRisk", "label": "Enable Advanced Risk Management", "type": "boolean" },
+    { "var": "iMaxCapital", "label": "Target account equity (Currency amount)", "type": "float" },
+    { "var": "iDailyDrawdown", "label": "Max. daily drawdown (%, equity)", "type": "float" },
+    { "var": "iOverallDrawdown", "label": "Max. overall drawdown (%, equity)", "type": "float" }
+  ],
+  "Day of week": [
+    { "var": "iTradeSunday", "label": "Open trades on Sunday", "type": "boolean" },
+    { "var": "iTradeMonday", "label": "Open trades on Monday", "type": "boolean" },
+    { "var": "iTradeTuesday", "label": "Open trades on Tuesday", "type": "boolean" },
+    { "var": "iTradeWednesday", "label": "Open trades on Wednesday", "type": "boolean" },
+    { "var": "iTradeThursday", "label": "Open trades on Thursday", "type": "boolean" },
+    { "var": "iTradeFriday", "label": "Open trades on Friday", "type": "boolean" },
+    { "var": "iTradeSaturday", "label": "Open trades on Saturday", "type": "boolean" },
+    { "var": "iCloseFriday", "label": "Close all trades on Friday", "type": "boolean" },
+    { "var": "iCloseFridayTime", "label": "Close trades time on Friday (HH:MM)", "type": "string" }
+  ],
+  "Dashboard": [
+    { "var": "iEnableDashboard", "label": "Enable dashboard", "type": "enum", "options": ["Full version", "Text-only version", "Disable"] },
+    { "var": "iBorder", "label": "Border", "type": "color" },
+    { "var": "iFont_color_1", "label": "Font 1", "type": "color" },
+    { "var": "iFont_color_2", "label": "Font 2", "type": "color" },
+    { "var": "iFont_color_3", "label": "Font 3", "type": "color" }
+  ]
+}

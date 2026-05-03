@@ -1,0 +1,6 @@
+• MT5 AAAFx Demo acc. 
+• Commission: 2.5$ per lot ($5.0 round turn)
+• Modelling: 1 minute OHLC
+• Leverage: 1:500
+• Latency: 1000ms
+

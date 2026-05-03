@@ -1,4 +1,4 @@
-import { SetFile, SetLine } from './types';
+import { SetFile, SetLine, extractFirstValue } from './types';
 
 export function parseSetFile(filename: string, content: string): SetFile {
   const rawLines = content.split(/\r?\n/);
@@ -13,7 +13,9 @@ export function parseSetFile(filename: string, content: string): SetFile {
     const eqIdx = raw.indexOf('=');
     if (eqIdx !== -1) {
       const key = raw.substring(0, eqIdx).trim();
-      const value = raw.substring(eqIdx + 1).trim();
+      const rawValue = raw.substring(eqIdx + 1).trim();
+      // Strip || optimizer suffixes — keep only the first value segment
+      const value = extractFirstValue(rawValue);
       return { type: 'param', raw, key, value };
     }
     return { type: 'comment', raw };
